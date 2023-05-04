@@ -114,8 +114,26 @@ public class Lexer {
 
         switch (this.chr) {
             case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            // remaining case statements
-
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
             default: return identifier_or_integer(line, pos);
         }
     }
