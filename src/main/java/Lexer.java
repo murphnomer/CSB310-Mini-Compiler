@@ -84,12 +84,22 @@ public class Lexer {
     Token char_lit(int line, int pos) { // handle character literals
         char c = getNextChar(); // skip opening quote
         int n = (int)c;
-        // code here
+        while (!Character.isLetterOrDigit(c)) {
+		c = getNextChar();
+	}
+	n = (int)c;
+	this.line = line;
+	this.pos = pos;
         return new Token(TokenType.Integer, "" + n, line, pos);
     }
     Token string_lit(char start, int line, int pos) { // handle string literals
         String result = "";
-        // code here
+        while (!Character.isWhiteSpace(start)) {
+		result += start;
+		start = getNextChar();
+	} 
+	this.line = line;
+	this.pos = pos;
         return new Token(TokenType.String, result, line, pos);
     }
     Token div_or_comment(int line, int pos) { // handle division or comments
@@ -139,7 +149,17 @@ public class Lexer {
     }
 
     char getNextChar() {
-        // get next character
+        this.pos++;
+	this.position++
+	if (this.position >= this.s.length()) {
+            this.chr = '\u0000';
+            return this.chr;
+        }
+        this.chr = this.s.charAt(this.position);
+        if (this.chr == '\n') {
+            this.line++;
+            this.pos = 0;
+        }	
         return this.chr;
     }
 
