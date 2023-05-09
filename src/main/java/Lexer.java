@@ -84,7 +84,7 @@ public class Lexer {
     Token char_lit(int line, int pos) { // handle character literals
         char c = getNextChar(); // skip opening quote
         int n = (int)c;
-        while (!Character.isLetterOrDigit(c)) {
+        while (Character.isWhiteSpace(c)) {
 		c = getNextChar();
 	}
 	n = (int)c;
@@ -124,26 +124,34 @@ public class Lexer {
 
         switch (this.chr) {
             case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-	    case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
+            case '*': return new Token(TokenType.Op_multiply, "*", this.line, this.pos);
+            case '/': return new Token(TokenType.Op_divide, "/", this.line, this.pos);
+            case '%': return new Token(TokenType.Op_mod, "%", this.line, this.pos);
+            case '+': return new Token(TokenType.Op_add, "+", this.line, this.pos);
+	    case '-': return new Token(TokenType.Op_subtract, "-", this.line, this.pos);
+	    case '-': return new Token(TokenType.Op_negate, "-", this.line, this.pos);
+	    case '<': return new Token(TokenType.Op_less, "<", this.line, this.pos);
+	    case "<=": return new Token(TokenType.Op_lessequal, "<=", this.line, this.pos);
+	    case '>': return new Token(TokenType.Op_greater, ">", this.line, this.pos);
+	    case ">=": return new Token(TokenType.Op_greaterequal, ">=", this.line, this.pos);
+            case "==": return new Token(TokenType.Op_equal, "==", this.line, this.pos);
+	    case "!=": return new Token(TokenType.Op_notequal, "!=", this.line, this.pos);
+	    case '!': return new Token(TokenType.Op_not, "!", this.line, this.pos);
+	    case '=': return new Token(TokenType.Op_assign, "=", this.line, this.pos);
+	    case "&&": return new Token(TokenType.Op_and, "&&", this.line, this.pos);
+	    case "||": return new Token(TokenType.Op_or, "||", this.line, this.pos);
+            case '(': return new Token(TokenType.LeftParen, "(", this.line, this.pos);
+	    case ')': return new Token(TokenType.RightParen, ")", this.line, this.pos);
+            case '{': return new Token(TokenType.LeftBrace, "{", this.line, this.pos);
+	    case '}': return new Token(TokenType.RightBrace, "}", this.line, this.pos);
+	    case ';': return new Token(TokenType.Semicolon, ";", this.line, this.pos);
+            case ',': return new Token(TokenType.Comma, ",", this.line, this.pos);
+	    case "if": return new Token(TokenType.Keyword_if, "if", this.line, this.pos);
+	    case "else": return new Token(TokenType.Keyword_else, "else", this.line, this.pos);
+            case "while": return new Token(TokenType.RightBrace, "while", this.line, this.pos);
+	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
+	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
+	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
             default: return identifier_or_integer(line, pos);
         }
     }
