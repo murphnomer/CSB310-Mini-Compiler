@@ -13,6 +13,8 @@ class Parser {
     private List<Token> source;
     private Token token;
     private int position;
+    private static final int MAX_PRECEDENCE = 13;
+    public static final String FILE_TO_PROCESS = "count";
 
     static class Node {
         public NodeType nt;
@@ -39,6 +41,9 @@ class Parser {
         }
         public static Node make_leaf(NodeType nodetype, String value) {
             return new Node(nodetype, null, null, value);
+        }
+        public String toString() {
+            return nt + " L: " + left + " R: " + right;
         }
     }
 
@@ -144,11 +149,60 @@ class Parser {
     }
     Node expr(int p) {
         // create nodes for token types such as LeftParen, Op_add, Op_subtract, etc.
-        // be very careful here and be aware of the precendence rules for the AST tree
-        Node result = null, node;
+        // be very careful here and be aware of the precedence rules for the AST tree
+        Node result = null, node, t, t1;
+        Token b = null;
+        int r = MAX_PRECEDENCE;
 
-        return result;
+        t = primary();
+        getNextToken();
+
+        while ((token.tokentype.isBinary() || token.tokentype.isUnary()) && (token.tokentype.getPrecedence() > p && token.tokentype.getPrecedence() <= r )) {
+            b = token;
+            getNextToken();
+            if (b.tokentype.is_binary) {
+                t1 = expr(b.tokentype.getPrecedence());
+                t = Node.make_node(b.tokentype.getNodeType(), t, t1);
+            } else {
+                t = primary();
+            }
+            r = b.tokentype.getPrecedence();
+        }
+
+        return t;
     }
+
+    Node multiplication_expr() {
+        return null;
+    }
+
+    Node primary() {
+        Node node = null;
+        switch (token.tokentype) {
+            case Identifier:
+                node = Node.make_leaf(NodeType.nd_Ident, token.value);
+                break;
+            case Integer:
+                node = Node.make_leaf(NodeType.nd_Integer, token.value);
+                break;
+            case LeftParen:
+                node = paren_expr();
+                break;
+            case Op_negate:
+                getNextToken();
+                node = Node.make_node(NodeType.nd_Negate, primary());
+                break;
+            case Op_not:
+                getNextToken();
+                node = Node.make_node(NodeType.nd_Not, primary());
+                break;
+        }
+        if (node == null) {
+            error(this.token.line, this.token.pos, "primary" + ": Expecting '" + "primary expression" + "', found: '" + this.token.tokentype + "'");
+        }
+        return node;
+    }
+
     Node paren_expr() {
         expect("paren_expr", TokenType.LeftParen);
         Node node = expr(0);
@@ -167,7 +221,98 @@ class Parser {
         // also handles while, end of file, braces
         Node s, s2, t = null, e, v;
 
+        switch(token.tokentype) {
+            case Semicolon:
+                getNextToken();
+                break;
+            case Identifier:
+                v = Node.make_leaf(NodeType.nd_Ident, token.value);
+                getNextToken();
+                expect("=", TokenType.Op_assign);
+                e = expr(0);
+                expect(";", TokenType.Semicolon);
+                t = Node.make_node(NodeType.nd_Assign, v, e);
+                break;
+            case Keyword_while:
+                getNextToken();
+                v = paren_expr();
+                e = stmt();
+                t = Node.make_node(NodeType.nd_While, v, e);
+                getNextToken();
+                break;
+            case Keyword_if:
+                getNextToken();
+                v = paren_expr();
+                e = stmt();
+                getNextToken();
+                s2 = null;
+                if (token.tokentype == TokenType.Keyword_else) {
+                    s2 = Node.make_node(NodeType.nd_Sequence, stmt());
+                }
+                s = Node.make_node(NodeType.nd_Sequence, e, s2);
+                t = Node.make_node(NodeType.nd_If, s, stmt());
+                break;
+            case Keyword_print:
+                getNextToken();
+                expect("(", TokenType.LeftParen);
+                v = prt_list();
+                expect(")", TokenType.RightParen);
+                s = Node.make_node(NodeType.nd_Sequence, v);
+                break;
+            case Keyword_putc:
+                getNextToken();
+                v = paren_expr();
+                expect(";", TokenType.Semicolon);
+                t = Node.make_node(NodeType.nd_Prtc,v);
+                getNextToken();
+                break;
+            case LeftBrace:
+                getNextToken();
+                v = stmt_list();
+                t = Node.make_node(NodeType.nd_Sequence, v);
+                getNextToken();
+                break;
+
+
+        }
+
         return t;
+    }
+
+    Node prt_list() {
+        Node node = null, v, t = null;
+
+        if (token.tokentype != TokenType.RightParen) {
+            if (token.tokentype == TokenType.String) {
+                v = Node.make_leaf(NodeType.nd_String, token.value);
+                node = Node.make_node(NodeType.nd_Prts, v);
+            } else {
+                //getNextToken();
+                v = expr(0);
+                node = Node.make_node(NodeType.nd_Prti, v);
+            }
+            getNextToken();
+            if (token.tokentype == TokenType.Comma) {
+                getNextToken();
+                t = prt_list();
+            }
+            node = Node.make_node(NodeType.nd_Sequence, node, t);
+        }
+
+        return node;
+    }
+
+    Node stmt_list() {
+        Node node = null, v;
+
+        while (token.tokentype != TokenType.RightBrace) {
+            //getNextToken();
+            v = stmt();
+            node = Node.make_node(NodeType.nd_Sequence, v);
+            getNextToken();
+        }
+
+        return node;
     }
     Node parse() {
         Node t = null;
@@ -203,7 +348,7 @@ class Parser {
 
     static void outputToFile(String result) {
         try {
-            FileWriter myWriter = new FileWriter("src/main/resources/hello.par");
+            FileWriter myWriter = new FileWriter("src/main/resources/" + FILE_TO_PROCESS + ".par");
             myWriter.write(result);
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -228,8 +373,38 @@ class Parser {
 
                 str_to_tokens.put("End_of_input", TokenType.End_of_input);
                 // finish creating your Hashmap. I left one as a model
+                str_to_tokens.put("Op_multiply", TokenType.Op_multiply);
+                str_to_tokens.put("Op_divide", TokenType.Op_divide);
+                str_to_tokens.put("Op_mod", TokenType.Op_mod);
+                str_to_tokens.put("Op_add", TokenType.Op_add);
+                str_to_tokens.put("Op_subtract", TokenType.Op_subtract);
+                str_to_tokens.put("Op_negate", TokenType.Op_negate);
+                str_to_tokens.put("Op_not", TokenType.Op_not);
+                str_to_tokens.put("Op_less", TokenType.Op_less);
+                str_to_tokens.put("Op_lessequal", TokenType.Op_lessequal);
+                str_to_tokens.put("Op_greater", TokenType.Op_greater);
+                str_to_tokens.put("Op_greaterequal", TokenType.Op_greaterequal);
+                str_to_tokens.put("Op_equal", TokenType.Op_equal);
+                str_to_tokens.put("Op_notequal", TokenType.Op_notequal);
+                str_to_tokens.put("Op_assign", TokenType.Op_assign);
+                str_to_tokens.put("Op_and", TokenType.Op_and);
+                str_to_tokens.put("Op_or", TokenType.Op_or);
+                str_to_tokens.put("Keyword_if", TokenType.Keyword_if);
+                str_to_tokens.put("Keyword_else", TokenType.Keyword_else);
+                str_to_tokens.put("Keyword_while", TokenType.Keyword_while);
+                str_to_tokens.put("Keyword_print", TokenType.Keyword_print);
+                str_to_tokens.put("Keyword_putc", TokenType.Keyword_putc);
+                str_to_tokens.put("LeftParen", TokenType.LeftParen);
+                str_to_tokens.put("RightParen", TokenType.RightParen);
+                str_to_tokens.put("LeftBrace", TokenType.LeftBrace);
+                str_to_tokens.put("RightBrace", TokenType.RightBrace);
+                str_to_tokens.put("Semicolon", TokenType.Semicolon);
+                str_to_tokens.put("Comma", TokenType.Comma);
+                str_to_tokens.put("Identifier", TokenType.Identifier);
+                str_to_tokens.put("Integer", TokenType.Integer);
+                str_to_tokens.put("String", TokenType.String);
 
-                Scanner s = new Scanner(new File("src/main/resources/hello.lex"));
+                Scanner s = new Scanner(new File("src/main/resources/" + FILE_TO_PROCESS + ".lex"));
                 String source = " ";
                 while (s.hasNext()) {
                     String str = s.nextLine();
