@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Parses the output produced by the lexer.
+ *
+ * @author Mike Murphy
+ */
 class Parser {
     private List<Token> source;
     private Token token;
@@ -130,6 +135,14 @@ class Parser {
         @Override
         public String toString() { return this.name; }
     }
+
+    /**
+     * Throws an error if the encountered syntax does not match the specified grammar.
+     *
+     * @param line is the line number of the source file where the error occurred
+     * @param pos is the position on the line where the error occurred
+     * @param msg is the message to pass on to the user about the incorrect item
+     */
     static void error(int line, int pos, String msg) {
         if (line > 0 && pos > 0) {
             System.out.printf("%s in line %d, pos %d\n", msg, line, pos);
@@ -143,10 +156,24 @@ class Parser {
         this.token = null;
         this.position = 0;
     }
+
+    /**
+     * Consume the next token in the stream
+     *
+     * @return is the next token
+     */
     Token getNextToken() {
         this.token = this.source.get(this.position++);
         return this.token;
     }
+
+    /**
+     * Parse an expression item in the grammar. Uses precedence climbing to associate terms according to the precedence
+     * order specified by the grammar of this language.
+     *
+     * @param p is the current maximum precedence level of tokens encountered thus far in the expression
+     * @return is a Node binary tree object representing this expression.
+     */
     Node expr(int p) {
         // create nodes for token types such as LeftParen, Op_add, Op_subtract, etc.
         // be very careful here and be aware of the precedence rules for the AST tree
@@ -172,6 +199,12 @@ class Parser {
         return t;
     }
 
+    /**
+     * Generates Node objects for a primary expression (identifier, literal, or either of these combined with a unary
+     * operator.
+     *
+     * @return is the binary tree Node representing this primary.
+     */
     Node primary() {
         Node node = null;
         switch (token.tokentype) {
@@ -199,12 +232,25 @@ class Parser {
         return node;
     }
 
+    /**
+     * Parses a parenthetical expression.
+     *
+     * @return is a Node binary tree object representing the expression inside the parentheses.
+     */
     Node paren_expr() {
         expect("paren_expr", TokenType.LeftParen);
         Node node = expr(0);
         expect("paren_expr", TokenType.RightParen);
         return node;
     }
+
+    /**
+     * Checks to see whether the next token in the stream is of the expected type when certain tokens are required
+     * by the grammar.
+     *
+     * @param msg is a user-friendly string descriptor of the expected token.
+     * @param s is the token type from the token enum.
+     */
     void expect(String msg, TokenType s) {
         if (this.token.tokentype == s) {
             getNextToken();
@@ -212,6 +258,12 @@ class Parser {
         }
         error(this.token.line, this.token.pos, msg + ": Expecting '" + s + "', found: '" + this.token.tokentype + "'");
     }
+
+    /**
+     * Parses a complete statement.
+     *
+     * @return is a Node binary tree object that represents the statement.
+     */
     Node stmt() {
         // this one handles TokenTypes such as Keyword_if, Keyword_else, nd_If, Keyword_print, etc.
         // also handles while, end of file, braces
@@ -276,6 +328,11 @@ class Parser {
         return t;
     }
 
+    /**
+     * Parses a comma-delimited list of items to be printed by a print command.
+     *
+     * @return is a Node binary tree object representing the sequence of items to be printed.
+     */
     Node prt_list() {
         Node node = null, v, t = null;
 
@@ -297,6 +354,11 @@ class Parser {
         return (node==null) ? t : node;
     }
 
+    /**
+     * Parses a list of statements inside of a code block.
+     *
+     * @return is a Node binary tree object representing the sequence of statements.
+     */
     Node stmt_list() {
         Node node = null;
         Token b;
@@ -311,6 +373,12 @@ class Parser {
 
         return node;
     }
+
+    /**
+     * Starts the parsing process at the top of the lexer document.
+     *
+     * @return is the root Node binary tree object representing the whole parsed document.
+     */
     Node parse() {
         Node t = null;
         getNextToken();
@@ -319,6 +387,14 @@ class Parser {
         }
         return t;
     }
+
+    /**
+     * Prints out a flattened tree representing the output of the parsing process.
+     *
+     * @param t is the root node of the binary tree to be output.
+     * @param sb is a StringBuilder object that will be used to construct the flattened output string.
+     * @return is the string representation of the binary tree.
+     */
     String printAST(Node t, StringBuilder sb) {
         int i = 0;
         if (t == null) {
@@ -343,6 +419,11 @@ class Parser {
         return sb.toString();
     }
 
+    /**
+     * Writes the flattened output to a file.
+     *
+     * @param result is the string representation to output.
+     */
     static void outputToFile(String result) {
         try {
             FileWriter myWriter = new FileWriter("src/main/resources/" + FILE_TO_PROCESS + ".par");
