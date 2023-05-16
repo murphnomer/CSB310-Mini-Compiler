@@ -172,10 +172,6 @@ class Parser {
         return t;
     }
 
-    Node multiplication_expr() {
-        return null;
-    }
-
     Node primary() {
         Node node = null;
         switch (token.tokentype) {
@@ -282,33 +278,30 @@ class Parser {
     Node prt_list() {
         Node node = null, v, t = null;
 
-        if (token.tokentype != TokenType.RightParen) {
+        while (token.tokentype != TokenType.RightParen) {
             if (token.tokentype == TokenType.String) {
                 v = Node.make_leaf(NodeType.nd_String, token.value);
                 node = Node.make_node(NodeType.nd_Prts, v);
             } else {
                 //getNextToken();
-                v = expr(0);
-                node = Node.make_node(NodeType.nd_Prti, v);
+                node = Node.make_node(NodeType.nd_Prti, expr(0));
             }
             getNextToken();
             if (token.tokentype == TokenType.Comma) {
                 getNextToken();
-                t = prt_list();
+                node = Node.make_node(NodeType.nd_Sequence, node);
             }
-            node = Node.make_node(NodeType.nd_Sequence, node, t);
         }
 
         return node;
     }
 
     Node stmt_list() {
-        Node node = null, v;
+        Node node = null;
 
         while (token.tokentype != TokenType.RightBrace) {
             //getNextToken();
-            v = stmt();
-            node = Node.make_node(NodeType.nd_Sequence, v);
+            node = Node.make_node(NodeType.nd_Sequence, node, stmt());
             getNextToken();
         }
 
