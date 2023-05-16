@@ -120,9 +120,9 @@ public class Lexer {
 		        return new Token(TokenType.Op_divide, "", line, pos);
             }
 	    }
-	    
-	this.line = line;
-	this.pos = pos;
+
+	    this.line = line;
+	    this.pos = pos;
         return getToken();
     }
     Token identifier_or_integer(int line, int pos) { // handle identifiers and integers
