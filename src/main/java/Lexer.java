@@ -21,7 +21,7 @@ public class Lexer {
         public int line;
         public int pos;
         Token(TokenType token, String value, int line, int pos) {
-            this.tokentype = token; this.value = value; this.line = line; this.pos = pos;
+            tokentype = token; this.value = value; this.line = line; this.pos = pos;
         }
         @Override
         public String toString() {
@@ -84,7 +84,7 @@ public class Lexer {
     Token char_lit(int line, int pos) { // handle character literals
         char c = getNextChar(); // skip opening quote
         int n = (int)c;
-        while (Character.isWhiteSpace(c)) {
+        while (Character.isWhitespace(c)) {
 		c = getNextChar();
 	}
 	n = (int)c;
@@ -94,23 +94,57 @@ public class Lexer {
     }
     Token string_lit(char start, int line, int pos) { // handle string literals
         String result = "";
-        while (!Character.isWhiteSpace(start)) {
-		result += start;
-		start = getNextChar();
-	} 
-	this.line = line;
-	this.pos = pos;
+        while (getNextChar() != start) {
+            result += this.chr;
+        }
+	    this.line = line;
+	    this.pos = pos;
+        this.chr = getNextChar();
         return new Token(TokenType.String, result, line, pos);
     }
     Token div_or_comment(int line, int pos) { // handle division or comments
-        // code here
+        if (this.chr == '/') {
+		    this.chr = getNextChar();
+		    if (this.chr == '/') {
+			    while(this.chr != '\n') {
+				    this.chr = getNextChar();
+			    }
+		    }
+		    else if (this.chr == '*') {
+		        this.chr = getNextChar();
+                while (this.chr != '/') {
+                    this.chr = getNextChar();
+                }
+            }
+		    else {
+		        return new Token(TokenType.Op_divide, "", line, pos);
+            }
+	    }
+	    
+	this.line = line;
+	this.pos = pos;
         return getToken();
     }
     Token identifier_or_integer(int line, int pos) { // handle identifiers and integers
         boolean is_number = true;
         String text = "";
-        // code here
-        return new Token(TokenType.Identifier, text, line, pos);
+	while (Character.isLetterOrDigit(this.chr) || this.chr == '_') {
+		text += this.chr;
+		if (!Character.isDigit(this.chr)) {
+			is_number = false;
+		}
+		this.chr = getNextChar();
+	}
+        if (Character.isDigit(text.charAt(0))) {
+		if (!is_number) {
+			error(line, pos, "Error found: Not a Digit");
+		}
+		return new Token(TokenType.Integer, text, line, pos);
+	} 
+	if (this.keywords.containsKey(text)) {
+		return new Token(this.keywords.get(text),"", line, pos);
+        }
+	return new Token(TokenType.Identifier, text, line, pos);
     }
     Token getToken() {
         int line, pos;
@@ -124,41 +158,32 @@ public class Lexer {
 
         switch (this.chr) {
             case '\u0000': return new Token(TokenType.End_of_input, "", this.line, this.pos);
-            case '*': return new Token(TokenType.Op_multiply, "*", this.line, this.pos);
-            case '/': return new Token(TokenType.Op_divide, "/", this.line, this.pos);
-            case '%': return new Token(TokenType.Op_mod, "%", this.line, this.pos);
-            case '+': return new Token(TokenType.Op_add, "+", this.line, this.pos);
-	    case '-': return new Token(TokenType.Op_subtract, "-", this.line, this.pos);
-	    case '-': return new Token(TokenType.Op_negate, "-", this.line, this.pos);
-	    case '<': return new Token(TokenType.Op_less, "<", this.line, this.pos);
-	    case "<=": return new Token(TokenType.Op_lessequal, "<=", this.line, this.pos);
-	    case '>': return new Token(TokenType.Op_greater, ">", this.line, this.pos);
-	    case ">=": return new Token(TokenType.Op_greaterequal, ">=", this.line, this.pos);
-            case "==": return new Token(TokenType.Op_equal, "==", this.line, this.pos);
-	    case "!=": return new Token(TokenType.Op_notequal, "!=", this.line, this.pos);
-	    case '!': return new Token(TokenType.Op_not, "!", this.line, this.pos);
-	    case '=': return new Token(TokenType.Op_assign, "=", this.line, this.pos);
-	    case "&&": return new Token(TokenType.Op_and, "&&", this.line, this.pos);
-	    case "||": return new Token(TokenType.Op_or, "||", this.line, this.pos);
-            case '(': return new Token(TokenType.LeftParen, "(", this.line, this.pos);
-	    case ')': return new Token(TokenType.RightParen, ")", this.line, this.pos);
-            case '{': return new Token(TokenType.LeftBrace, "{", this.line, this.pos);
-	    case '}': return new Token(TokenType.RightBrace, "}", this.line, this.pos);
-	    case ';': return new Token(TokenType.Semicolon, ";", this.line, this.pos);
-            case ',': return new Token(TokenType.Comma, ",", this.line, this.pos);
-	    case "if": return new Token(TokenType.Keyword_if, "if", this.line, this.pos);
-	    case "else": return new Token(TokenType.Keyword_else, "else", this.line, this.pos);
-            case "while": return new Token(TokenType.RightBrace, "while", this.line, this.pos);
-	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
-	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
-	    case '}': return new Token(TokenType.RightBrace, "", this.line, this.pos);
-            default: return identifier_or_integer(line, pos);
+            case '/': return div_or_comment(line, pos);
+            case '\'': return char_lit(line, pos);
+            case '<': return follow('=', TokenType.Op_lessequal, TokenType.Op_less, line, pos);
+            case '>': return follow('=', TokenType.Op_greaterequal, TokenType.Op_greater, line, pos);
+            case '=': return follow('=', TokenType.Op_equal, TokenType.Op_assign, line, pos);
+            case '!': return follow('=', TokenType.Op_notequal, TokenType.Op_not, line, pos);
+            case '&': return follow('&', TokenType.Op_and, TokenType.End_of_input, line, pos);
+            case '|': return follow('|', TokenType.Op_or, TokenType.End_of_input, line, pos);
+            case '"': return string_lit(this.chr, line, pos);
+            case '{': getNextChar(); return new Token(TokenType.LeftBrace, "", line, pos);
+            case '}': getNextChar(); return new Token(TokenType.RightBrace, "", line, pos);
+            case '(': getNextChar(); return new Token(TokenType.LeftParen, "", line, pos);
+            case ')': getNextChar(); return new Token(TokenType.RightParen, "", line, pos);
+            case '+': getNextChar(); return new Token(TokenType.Op_add, "", line, pos);
+            case '-': getNextChar(); return new Token(TokenType.Op_subtract, "", line, pos);
+            case '*': getNextChar(); return new Token(TokenType.Op_multiply, "", line, pos);
+            case '%': getNextChar(); return new Token(TokenType.Op_mod, "", line, pos);
+            case ';': getNextChar(); return new Token(TokenType.Semicolon, "", line, pos);
+            case ',': getNextChar(); return new Token(TokenType.Comma, "", line, pos);
+	    default: return identifier_or_integer(line, pos);
         }
     }
 
     char getNextChar() {
         this.pos++;
-	this.position++
+	this.position++;
 	if (this.position >= this.s.length()) {
             this.chr = '\u0000';
             return this.chr;
@@ -186,7 +211,7 @@ public class Lexer {
 
     static void outputToFile(String result) {
         try {
-            FileWriter myWriter = new FileWriter("src/main/resources/hello.lex");
+            FileWriter myWriter = new FileWriter("src/main/resources/mycount.lex");
             myWriter.write(result);
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -199,7 +224,7 @@ public class Lexer {
         if (1==1) {
             try {
 
-                File f = new File("src/main/resources/hello.t");
+                File f = new File("src/main/resources/count.c");
                 Scanner s = new Scanner(f);
                 String source = " ";
                 String result = " ";
