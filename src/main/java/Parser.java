@@ -14,7 +14,7 @@ class Parser {
     private Token token;
     private int position;
     private static final int MAX_PRECEDENCE = 13;
-    public static final String FILE_TO_PROCESS = "count";
+    public static final String FILE_TO_PROCESS = "hello";
 
     static class Node {
         public NodeType nt;
@@ -234,7 +234,7 @@ class Parser {
                 v = paren_expr();
                 e = stmt();
                 t = Node.make_node(NodeType.nd_While, v, e);
-                getNextToken();
+                //getNextToken();
                 break;
             case Keyword_if:
                 getNextToken();
@@ -251,9 +251,9 @@ class Parser {
             case Keyword_print:
                 getNextToken();
                 expect("(", TokenType.LeftParen);
-                v = prt_list();
+                t = prt_list();
                 expect(")", TokenType.RightParen);
-                s = Node.make_node(NodeType.nd_Sequence, v);
+                //t = Node.make_node(NodeType.nd_Sequence, v);
                 break;
             case Keyword_putc:
                 getNextToken();
@@ -264,9 +264,10 @@ class Parser {
                 break;
             case LeftBrace:
                 getNextToken();
-                v = stmt_list();
-                t = Node.make_node(NodeType.nd_Sequence, v);
-                getNextToken();
+                t = stmt_list();
+                //v = stmt_list();
+                //t = Node.make_node(NodeType.nd_Sequence, v);
+                //getNextToken();
                 break;
 
 
@@ -281,27 +282,30 @@ class Parser {
         while (token.tokentype != TokenType.RightParen) {
             if (token.tokentype == TokenType.String) {
                 v = Node.make_leaf(NodeType.nd_String, token.value);
-                node = Node.make_node(NodeType.nd_Prts, v);
+                t = Node.make_node(NodeType.nd_Prts, v);
+                getNextToken();
             } else {
                 //getNextToken();
-                node = Node.make_node(NodeType.nd_Prti, expr(0));
+                t = Node.make_node(NodeType.nd_Prti, expr(0));
             }
-            getNextToken();
             if (token.tokentype == TokenType.Comma) {
                 getNextToken();
-                node = Node.make_node(NodeType.nd_Sequence, node);
+                node = Node.make_node(NodeType.nd_Sequence, node, t);
             }
         }
 
-        return node;
+        return (node==null) ? t : node;
     }
 
     Node stmt_list() {
         Node node = null;
+        Token b;
 
-        while (token.tokentype != TokenType.RightBrace) {
+        b = token;
+        while (b.tokentype != TokenType.RightBrace) {
             //getNextToken();
             node = Node.make_node(NodeType.nd_Sequence, node, stmt());
+            b = token;
             getNextToken();
         }
 

@@ -13,16 +13,12 @@ Sequence
 ;
 Sequence
 Sequence
-Sequence
 ;
 Prts
 String "count is: " 
 ;
 Prti
 Identifier count 
-;
-Prts
-String "\n" 
 ;
 Assign
 Identifier count 
