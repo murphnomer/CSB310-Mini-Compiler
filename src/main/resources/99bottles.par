@@ -1,0 +1,39 @@
+Sequence
+Sequence
+;
+Assign
+Identifier bottles 
+Integer 99 
+While
+Greater
+Identifier bottles 
+Integer 0 
+Sequence
+Sequence
+Sequence
+Sequence
+Sequence
+;
+Sequence
+;
+Prti
+Identifier bottles 
+;
+Sequence
+;
+Prti
+Identifier bottles 
+;
+Prts
+String "Take one down, pass it around\n" 
+;
+Assign
+Identifier bottles 
+Subtract
+Identifier bottles 
+Integer 1 
+Sequence
+;
+Prti
+Identifier bottles 
+;

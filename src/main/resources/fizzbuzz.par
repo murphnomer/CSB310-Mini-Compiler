@@ -1,0 +1,55 @@
+Sequence
+Sequence
+;
+Assign
+Identifier i 
+Integer 1 
+While
+LessEqual
+Identifier i 
+Integer 100 
+Sequence
+Sequence
+Sequence
+Sequence
+Sequence
+Sequence
+;
+If
+Sequence
+Prts
+String "FizzBuzz" 
+;
+Sequence
+;
+;
+;
+If
+Sequence
+Prts
+String "Fizz" 
+;
+Sequence
+;
+;
+;
+If
+Sequence
+Prts
+String "Buzz" 
+;
+Sequence
+;
+;
+;
+Prti
+Identifier i 
+;
+Prts
+String "\n" 
+;
+Assign
+Identifier i 
+Add
+Identifier i 
+Integer 1 
