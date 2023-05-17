@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Lexer class outputs token type and the line and position it was found.
+ */
 public class Lexer {
     private int line;
     private int pos;
@@ -81,70 +84,95 @@ public class Lexer {
         }
         return new Token(ifno, "", line, pos);
     }
+
+    /**
+     * Gets character literal and converts to integer
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type Integer
+     */
     Token char_lit(int line, int pos) { // handle character literals
         char c = getNextChar(); // skip opening quote
         int n = (int)c;
         while (Character.isWhitespace(c)) {
-		c = getNextChar();
-	}
-	n = (int)c;
-	this.line = line;
-	this.pos = pos;
+            c = getNextChar();
+        }
+        n = (int)c;
+        this.line = line;
+        this.pos = pos;
         return new Token(TokenType.Integer, "" + n, line, pos);
     }
+    /**
+     * Accumulates result variable with with characters until it reaches closed quote
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type String
+     */
     Token string_lit(char start, int line, int pos) { // handle string literals
         String result = "";
         while (getNextChar() != start) {
             result += this.chr;
         }
-	    this.line = line;
-	    this.pos = pos;
+        this.line = line;
+        this.pos = pos;
         this.chr = getNextChar();
         return new Token(TokenType.String, result, line, pos);
     }
+    /**
+     * Ignores single line and multi-line comment
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type Op_divide
+     **/
     Token div_or_comment(int line, int pos) { // handle division or comments
         if (this.chr == '/') {
-		    this.chr = getNextChar();
-		    if (this.chr == '/') {
-			    while(this.chr != '\n') {
-				    this.chr = getNextChar();
-			    }
-		    }
-		    else if (this.chr == '*') {
-		        this.chr = getNextChar();
+            this.chr = getNextChar();
+            if (this.chr == '/') {
+                while(this.chr != '\n') {
+                    this.chr = getNextChar();
+                }
+            }
+            else if (this.chr == '*') {
+                this.chr = getNextChar();
                 while (this.chr != '/') {
                     this.chr = getNextChar();
                 }
             }
-		    else {
-		        return new Token(TokenType.Op_divide, "", line, pos);
+            else {
+                return new Token(TokenType.Op_divide, "", line, pos);
             }
-	    }
+        }
 
-	    this.line = line;
-	    this.pos = pos;
+        this.line = line;
+        this.pos = pos;
         return getToken();
     }
+    /**
+     * Determines whether token is integer, identifier or reserved keyword.
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type integer, identifier or reserved keyword
+     **/
     Token identifier_or_integer(int line, int pos) { // handle identifiers and integers
         boolean is_number = true;
         String text = "";
-	while (Character.isLetterOrDigit(this.chr) || this.chr == '_') {
-		text += this.chr;
-		if (!Character.isDigit(this.chr)) {
-			is_number = false;
-		}
-		this.chr = getNextChar();
-	}
-        if (Character.isDigit(text.charAt(0))) {
-		if (!is_number) {
-			error(line, pos, "Error found: Not a Digit");
-		}
-		return new Token(TokenType.Integer, text, line, pos);
-	} 
-	if (this.keywords.containsKey(text)) {
-		return new Token(this.keywords.get(text),"", line, pos);
+        while (Character.isLetterOrDigit(this.chr) || this.chr == '_') {
+            text += this.chr;
+            if (!Character.isDigit(this.chr)) {
+                is_number = false;
+            }
+            this.chr = getNextChar();
         }
-	return new Token(TokenType.Identifier, text, line, pos);
+        if (Character.isDigit(text.charAt(0))) {
+            if (!is_number) {
+                error(line, pos, "Error found: Not a Digit");
+            }
+            return new Token(TokenType.Integer, text, line, pos);
+        }
+        if (this.keywords.containsKey(text)) {
+            return new Token(this.keywords.get(text),"", line, pos);
+        }
+        return new Token(TokenType.Identifier, text, line, pos);
     }
     Token getToken() {
         int line, pos;
@@ -177,14 +205,14 @@ public class Lexer {
             case '%': getNextChar(); return new Token(TokenType.Op_mod, "", line, pos);
             case ';': getNextChar(); return new Token(TokenType.Semicolon, "", line, pos);
             case ',': getNextChar(); return new Token(TokenType.Comma, "", line, pos);
-	    default: return identifier_or_integer(line, pos);
+            default: return identifier_or_integer(line, pos);
         }
     }
 
     char getNextChar() {
         this.pos++;
-	this.position++;
-	if (this.position >= this.s.length()) {
+        this.position++;
+        if (this.position >= this.s.length()) {
             this.chr = '\u0000';
             return this.chr;
         }
@@ -192,7 +220,7 @@ public class Lexer {
         if (this.chr == '\n') {
             this.line++;
             this.pos = 0;
-        }	
+        }
         return this.chr;
     }
 
@@ -211,7 +239,7 @@ public class Lexer {
 
     static void outputToFile(String result) {
         try {
-            FileWriter myWriter = new FileWriter("src/main/resources/myfizzbuzz.lex");
+            FileWriter myWriter = new FileWriter("src/main/resources/mycount.lex");
             myWriter.write(result);
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
@@ -224,7 +252,7 @@ public class Lexer {
         if (1==1) {
             try {
 
-                File f = new File("src/main/resources/fizzbuzz.c");
+                File f = new File("src/main/resources/count.c");
                 Scanner s = new Scanner(f);
                 String source = " ";
                 String result = " ";
