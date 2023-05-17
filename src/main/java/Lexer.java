@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Lexer class outputs token type and the line and position it was found.
+ */
 public class Lexer {
     private int line;
     private int pos;
@@ -81,6 +84,13 @@ public class Lexer {
         }
         return new Token(ifno, "", line, pos);
     }
+
+    /**
+     * Gets character literal and converts to integer
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type Integer
+     */
     Token char_lit(int line, int pos) { // handle character literals
         char c = getNextChar(); // skip opening quote
         int n = (int)c;
@@ -92,6 +102,12 @@ public class Lexer {
 	this.pos = pos;
         return new Token(TokenType.Integer, "" + n, line, pos);
     }
+    /**
+     * Accumulates result variable with with characters until it reaches closed quote
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type String
+     */
     Token string_lit(char start, int line, int pos) { // handle string literals
         String result = "";
         while (getNextChar() != start) {
@@ -102,6 +118,12 @@ public class Lexer {
         this.chr = getNextChar();
         return new Token(TokenType.String, result, line, pos);
     }
+/**
+ * Ignores single line and multi-line comment
+ * @param line line number of character
+ * @param pos position number of character
+ * @return token object of type Op_divide
+ **/
     Token div_or_comment(int line, int pos) { // handle division or comments
         if (this.chr == '/') {
 		    this.chr = getNextChar();
@@ -125,6 +147,12 @@ public class Lexer {
 	    this.pos = pos;
         return getToken();
     }
+    /**
+     * Determines whether token is integer, identifier or reserved keyword.
+     * @param line line number of character
+     * @param pos position number of character
+     * @return token object of type integer, identifier or reserved keyword
+     **/
     Token identifier_or_integer(int line, int pos) { // handle identifiers and integers
         boolean is_number = true;
         String text = "";
