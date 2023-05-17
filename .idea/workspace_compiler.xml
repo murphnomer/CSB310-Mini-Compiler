@@ -23,7 +23,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a7ac25b6-265d-43ed-8230-0c6749f7127e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/LexerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Lexer.java" afterDir="false" />
     </list>
@@ -40,8 +39,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -58,14 +57,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
-    <property name="Repository.Attach.Annotations" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="false" />
-    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="create.test.in.the.same.root" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -73,8 +65,8 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
@@ -82,8 +74,8 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources" />
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Lexer2">
@@ -108,24 +100,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LexerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CSB310Forked-Mini-Compiler" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="LexerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.Lexer1" />
       <item itemvalue="Application.Lexer2" />
       <item itemvalue="Application.Lexer" />
-      <item itemvalue="JUnit.LexerTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LexerTest" />
         <item itemvalue="Application.Lexer1" />
         <item itemvalue="Application.Lexer" />
       </list>
@@ -165,45 +146,37 @@
     </state>
     <state x="249" y="-1091" width="1071" height="754" key="#com.intellij.execution.impl.EditConfigurationsDialog/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684024358615" />
     <state x="249" y="-1091" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024020087" />
-    <state x="576" y="-804" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1684288536238">
-      <screen x="-425" y="-1415" width="2560" height="1415" />
-    </state>
-    <state x="576" y="-804" key="#com.intellij.fileTypes.FileTypeChooser/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684288536238" />
     <state x="522" y="-944" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1684024348920">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
     <state x="522" y="-944" key="#com.intellij.ide.util.TreeClassChooserDialog/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684024348920" />
     <state x="522" y="-944" key="#com.intellij.ide.util.TreeClassChooserDialog/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684023996279" />
-    <state width="2119" height="382" key="GridCell.Tab.0.bottom" timestamp="1684303396776">
+    <state width="2119" height="416" key="GridCell.Tab.0.bottom" timestamp="1684207945213">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
-    <state width="2119" height="382" key="GridCell.Tab.0.bottom/-425.-1415.2560.1324/0.25.1792.1095@-425.-1415.2560.1324" timestamp="1684298478351" />
-    <state width="2119" height="382" key="GridCell.Tab.0.bottom/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684298018937" />
-    <state width="2119" height="382" key="GridCell.Tab.0.bottom/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684303396776" />
+    <state width="2119" height="416" key="GridCell.Tab.0.bottom/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684025944252" />
+    <state width="2119" height="416" key="GridCell.Tab.0.bottom/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684207945213" />
     <state width="2119" height="416" key="GridCell.Tab.0.bottom/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684025693395" />
     <state width="2119" height="416" key="GridCell.Tab.0.bottom/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024800202" />
-    <state width="2119" height="382" key="GridCell.Tab.0.center" timestamp="1684303396775">
+    <state width="2119" height="416" key="GridCell.Tab.0.center" timestamp="1684207945213">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
-    <state width="2119" height="382" key="GridCell.Tab.0.center/-425.-1415.2560.1324/0.25.1792.1095@-425.-1415.2560.1324" timestamp="1684298478350" />
-    <state width="2119" height="382" key="GridCell.Tab.0.center/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684298018937" />
-    <state width="2119" height="382" key="GridCell.Tab.0.center/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684303396775" />
+    <state width="2119" height="416" key="GridCell.Tab.0.center/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684025944252" />
+    <state width="2119" height="416" key="GridCell.Tab.0.center/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684207945213" />
     <state width="2119" height="416" key="GridCell.Tab.0.center/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684025693394" />
     <state width="2119" height="416" key="GridCell.Tab.0.center/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024800201" />
-    <state width="2119" height="382" key="GridCell.Tab.0.left" timestamp="1684303396775">
+    <state width="2119" height="416" key="GridCell.Tab.0.left" timestamp="1684207945212">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
-    <state width="2119" height="382" key="GridCell.Tab.0.left/-425.-1415.2560.1324/0.25.1792.1095@-425.-1415.2560.1324" timestamp="1684298478349" />
-    <state width="2119" height="382" key="GridCell.Tab.0.left/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684298018936" />
-    <state width="2119" height="382" key="GridCell.Tab.0.left/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684303396775" />
+    <state width="2119" height="416" key="GridCell.Tab.0.left/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684025944251" />
+    <state width="2119" height="416" key="GridCell.Tab.0.left/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684207945212" />
     <state width="2119" height="416" key="GridCell.Tab.0.left/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684025693393" />
     <state width="2119" height="416" key="GridCell.Tab.0.left/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024800200" />
-    <state width="2119" height="382" key="GridCell.Tab.0.right" timestamp="1684303396775">
+    <state width="2119" height="416" key="GridCell.Tab.0.right" timestamp="1684207945213">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
-    <state width="2119" height="382" key="GridCell.Tab.0.right/-425.-1415.2560.1324/0.25.1792.1095@-425.-1415.2560.1324" timestamp="1684298478350" />
-    <state width="2119" height="382" key="GridCell.Tab.0.right/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684298018937" />
-    <state width="2119" height="382" key="GridCell.Tab.0.right/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684303396775" />
+    <state width="2119" height="416" key="GridCell.Tab.0.right/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684025944252" />
+    <state width="2119" height="416" key="GridCell.Tab.0.right/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684207945213" />
     <state width="2119" height="416" key="GridCell.Tab.0.right/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684025693395" />
     <state width="2119" height="416" key="GridCell.Tab.0.right/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024800201" />
     <state width="2119" height="416" key="GridCell.Tab.1.bottom" timestamp="1684207945214">
@@ -234,23 +207,10 @@
     <state width="2119" height="416" key="GridCell.Tab.1.right/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684207945214" />
     <state width="2119" height="416" key="GridCell.Tab.1.right/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684025693302" />
     <state width="2119" height="416" key="GridCell.Tab.1.right/-425.-1415.2560.1415/0.25.1792.1029@-425.-1415.2560.1415" timestamp="1684024800086" />
-    <state x="319" y="-902" key="SettingsEditor" timestamp="1684288392197">
+    <state x="319" y="-902" key="SettingsEditor" timestamp="1684024382986">
       <screen x="-425" y="-1415" width="2560" height="1415" />
     </state>
-    <state x="319" y="-902" key="SettingsEditor/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684288392197" />
     <state x="319" y="-902" key="SettingsEditor/-425.-1415.2560.1415/0.25.1792.1027@-425.-1415.2560.1415" timestamp="1684024382986" />
-    <state x="822" y="-732" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1684291975117">
-      <screen x="-425" y="-1415" width="2560" height="1326" />
-    </state>
-    <state x="822" y="-732" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684291975117" />
-    <state x="898" y="-938" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1684292101320">
-      <screen x="-425" y="-1415" width="2560" height="1326" />
-    </state>
-    <state x="898" y="-938" key="com.intellij.testIntegration.createTest.CreateTestDialog/-425.-1415.2560.1326/0.25.1792.1095@-425.-1415.2560.1326" timestamp="1684292101320" />
-    <state x="664" y="-974" width="670" height="676" key="search.everywhere.popup" timestamp="1684281522615">
-      <screen x="-425" y="-1415" width="2560" height="1415" />
-    </state>
-    <state x="664" y="-974" width="670" height="676" key="search.everywhere.popup/-425.-1415.2560.1415/0.25.1792.1026@-425.-1415.2560.1415" timestamp="1684281522615" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
