@@ -19,7 +19,7 @@ class Parser {
     private Token token;
     private int position;
     private static final int MAX_PRECEDENCE = 13;
-    public static final String FILE_TO_PROCESS = "fizzbuzz";
+    public static final String FILE_TO_PROCESS = "prime";
 
     static class Node {
         public NodeType nt;
@@ -182,7 +182,7 @@ class Parser {
         int r = MAX_PRECEDENCE;
 
         t = primary();
-        getNextToken();
+        if (!(token.tokentype == TokenType.RightParen || token.tokentype == TokenType.Op_and)) getNextToken();
 
         while ((token.tokentype.isBinary() || token.tokentype.isUnary()) && (token.tokentype.getPrecedence() > p && token.tokentype.getPrecedence() <= r )) {
             b = token;
@@ -292,7 +292,7 @@ class Parser {
                 getNextToken();
                 v = paren_expr();
                 e = stmt();
-                getNextToken();
+                //getNextToken();
                 s2 = null;
                 if (token.tokentype == TokenType.Keyword_else) {
                     s2 = Node.make_node(NodeType.nd_Sequence, stmt());
@@ -305,6 +305,7 @@ class Parser {
                 expect("(", TokenType.LeftParen);
                 t = prt_list();
                 expect(")", TokenType.RightParen);
+                expect(";", TokenType.Semicolon);
                 //t = Node.make_node(NodeType.nd_Sequence, v);
                 break;
             case Keyword_putc:
@@ -312,14 +313,13 @@ class Parser {
                 v = paren_expr();
                 expect(";", TokenType.Semicolon);
                 t = Node.make_node(NodeType.nd_Prtc,v);
-                getNextToken();
                 break;
             case LeftBrace:
                 getNextToken();
                 t = stmt_list();
                 //v = stmt_list();
                 //t = Node.make_node(NodeType.nd_Sequence, v);
-                //getNextToken();
+                getNextToken();
                 break;
 
 
@@ -368,7 +368,7 @@ class Parser {
             //getNextToken();
             node = Node.make_node(NodeType.nd_Sequence, node, stmt());
             b = token;
-            getNextToken();
+            //getNextToken();
         }
 
         return node;
