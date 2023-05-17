@@ -19,7 +19,7 @@ class Parser {
     private Token token;
     private int position;
     private static final int MAX_PRECEDENCE = 13;
-    public static final String FILE_TO_PROCESS = "prime";
+    public static final String FILE_TO_PROCESS = "test";
 
     static class Node {
         public NodeType nt;
